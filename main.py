@@ -14,19 +14,19 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    print("メッセージ検知")
+    print(f"{message.channel.id} {message.channel}message got")
     if message.author.bot:
         return
     
     if message.channel.id in CHANNEL:
-        print(f"{message.channel.id} {message.channel}は該当します")
+        print("it is in channel")
         if message.attachments:
-            print("メッセージは添付ファイルを持ちます")
+            print("message has attachment")
             for attachment in message.attachments:
                 file = attachment
-                file.filename = f"SPOILER_{file.filename}"
                 spoiler = await file.to_file()
-                await message.channel.send(file=spoiler)
+                spoiler.filename = f"SPOILER_{file.filename}"
+                await message.channel.send(f"Send from: {message.author.display_name}", file=spoiler)
             await message.delete()
 
 client.run(TOKEN)

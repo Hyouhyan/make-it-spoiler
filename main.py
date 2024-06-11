@@ -30,10 +30,7 @@ async def on_message(message):
                 
                 spoiler = await file.to_file()
                 spoiler.filename = f"SPOILER_{file.filename}"
-                if("匿名" in message.content):
-                    await message.channel.send(f"Send from: 匿名\n{message.content}", file=spoiler)
-                else:
-                    await message.channel.send(f"Send from: {message.author.display_name}\n{message.content}", file=spoiler)
+                await message.channel.send(f"{message.content}", file=spoiler)
         
                 logRoom = client.get_channel(LOG_ROOM_CHANNEL)
                 log = await file.to_file()

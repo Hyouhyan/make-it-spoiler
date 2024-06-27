@@ -1,6 +1,8 @@
 # make-ti-spoile
 指定されたチャンネルに投稿された画像ファイルにスポイラーをかけるだけのbot
 
+## 環境
+Python 3.9.8 or higher
 
 # 利用方法
 

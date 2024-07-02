@@ -2,12 +2,37 @@ import discord
 from discord import app_commands
 import datetime
 
-TOKEN="DISCORD_BOT_TOKEN"
-CHANNEL=[]
-CHANNEL.append("CHANNEL_ID")
-CHANNEL.append("CHANNEL_ID")
+import json
+import os
 
-LOG_ROOM_CHANNEL = "LOG_ROOM_CHANNEL_ID"
+CONFIG_FILE = "config.json"
+
+config = {
+    "DISCORD_BOT_TOKEN": "DISCORD_BOT_TOKEN",
+    "CHANNEL": [
+        "CHANNEL_ID",
+        "CHANNEL_ID"
+    ],
+    "LOG_ROOM_CHANNEL": "LOG_ROOM_CHANNEL_ID"
+}
+
+def load_config():
+    if os.path.exists(CONFIG_FILE):
+        with open(CONFIG_FILE, "r") as f:
+            return json.load(f)
+    else:
+        return None
+
+def save_config(config):
+    with open(CONFIG_FILE, "w") as f:
+        json.dump(config, f, indent=4)
+
+config = load_config()
+
+TOKEN = config["DISCORD_BOT_TOKEN"]
+CHANNEL = config["CHANNEL"]
+
+LOG_ROOM_CHANNEL = config["LOG_ROOM_CHANNEL"]
 
 intents = discord.Intents.all()
 client = discord.Client(intents = intents)
@@ -65,4 +90,4 @@ async def makeitspoiler_app(interaction: discord.Interaction, message: discord.M
         await message.delete()
 
 
-client.run(TOKEN)
+# client.run(TOKEN)

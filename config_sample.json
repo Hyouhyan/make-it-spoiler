@@ -1,0 +1,8 @@
+{
+    "DISCORD_BOT_TOKEN": "DISCORD_BOT_TOKEN",
+    "CHANNEL": [
+        "CHANNEL_ID",
+        "CHANNEL_ID"
+    ],
+    "LOG_ROOM_CHANNEL": "LOG_ROOM_CHANNEL_ID"
+}

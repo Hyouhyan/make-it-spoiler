@@ -12,15 +12,19 @@ python -m pip install -r requirements.txt
 ```
 
 ## 定数の定義
-main.py内の最初数行を編集する
+config_sample.jsonをconfig.jsonにリネームして複製する。
+いい感じに編集する。
 
-```py
-TOKEN="DISCORD_BOT_TOKEN" #DiscordBotのTokenを入力
-CHANNEL=[]
-CHANNEL.append("CHANNEL_ID") #自動スポイラーのチャンネルIDを入力
-CHANNEL.append("CHANNEL_ID") #複数ある場合は入力、ない場合はこの行を削除
-
-LOG_ROOM_CHANNEL = "LOG_ROOM_CHANNEL_ID" #動作ログを残すチャンネルのIDを入力
+BotTokenはString、channelIDはIntなので、気を付けて。
+```json
+{
+    "DISCORD_BOT_TOKEN": "DISCORD_BOT_TOKEN",
+    "CHANNEL": [
+        12345,
+        12345
+    ],
+    "LOG_ROOM_CHANNEL": 12345
+}
 ```
 
 ## 実行

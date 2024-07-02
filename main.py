@@ -86,7 +86,7 @@ async def makeitspoiler_app(interaction: discord.Interaction, message: discord.M
             
             spoiler = await file.to_file()
             spoiler.filename = f"SPOILER_{file.filename}"
-            await interaction.response.send_message(f"{message.content}", file=spoiler)
+            await message.channel.send(f"{message.content}", file=spoiler)
 
             logRoom = client.get_channel(LOG_ROOM_CHANNEL)
             log = await file.to_file()
@@ -95,6 +95,7 @@ async def makeitspoiler_app(interaction: discord.Interaction, message: discord.M
             embed.set_author(name = message.author.name,icon_url = message.author.avatar.url)
             embed.set_footer(text = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S'))
             await logRoom.send(file=log, embed = embed)
+        await interaction.response.send_message(ephemeral=True, content="スポイラーにしました")
         await message.delete()
 
 

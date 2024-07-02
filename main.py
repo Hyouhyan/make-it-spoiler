@@ -90,4 +90,4 @@ async def makeitspoiler_app(interaction: discord.Interaction, message: discord.M
         await message.delete()
 
 
-# client.run(TOKEN)
+client.run(TOKEN)

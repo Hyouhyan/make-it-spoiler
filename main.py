@@ -27,6 +27,10 @@ def save_config(config):
     with open(CONFIG_FILE, "w") as f:
         json.dump(config, f, indent=4)
 
+def initialize():
+    
+    print("初期化完了")
+
 config = load_config()
 
 TOKEN = config["DISCORD_BOT_TOKEN"]
@@ -42,6 +46,10 @@ commandTree = app_commands.CommandTree(client)
 @client.event
 async def on_ready():
     print("ログイン成功")
+    initialize()
+    for i in client.guilds:
+        commandTree.clear_commands(guild = discord.Object(id = i.id))
+    await commandTree.sync()
 
 @client.event
 async def on_message(message):
@@ -88,6 +96,8 @@ async def makeitspoiler_app(interaction: discord.Interaction, message: discord.M
             embed.set_footer(text = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S'))
             await logRoom.send(file=log, embed = embed)
         await message.delete()
+
+
 
 
 client.run(TOKEN)

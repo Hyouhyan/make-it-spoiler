@@ -12,7 +12,7 @@ python -m pip install -r requirements.txt
 ```
 
 ## 定数の定義
-config_sample.jsonをconfig.jsonにリネームして複製する。
+config_sample.jsonをconfig.jsonにリネームして複製する。  
 いい感じに編集する。
 
 BotTokenはString、channelIDはIntなので、気を付けて。

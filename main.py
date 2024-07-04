@@ -92,6 +92,7 @@ async def makeitspoiler_app(interaction: discord.Interaction, message: discord.M
             log = await file.to_file()
             embed = discord.Embed(title = message.content)
             embed.add_field(name = "送信先", value = f"{message.guild.name} {message.channel.name}")
+            embed.add_field(name = "実行者", value = f"{interaction.user.name} {interaction.user.id}")
             embed.set_author(name = message.author.name,icon_url = message.author.avatar.url)
             embed.set_footer(text = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S'))
             await logRoom.send(file=log, embed = embed)

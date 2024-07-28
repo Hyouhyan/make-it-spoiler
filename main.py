@@ -33,11 +33,6 @@ def initialize():
 
 config = load_config()
 
-TOKEN = config["DISCORD_BOT_TOKEN"]
-CHANNEL = config["CHANNEL"]
-
-LOG_ROOM_CHANNEL = config["LOG_ROOM_CHANNEL"]
-
 intents = discord.Intents.all()
 client = discord.Client(intents = intents)
 
@@ -57,7 +52,7 @@ async def on_message(message):
     if message.author.bot:
         return
     
-    if message.channel.id in CHANNEL:
+    if message.channel.id in config["CHANNEL"]:
         print("it is in channel")
         if message.attachments:
             print("message has attachment")
@@ -68,7 +63,7 @@ async def on_message(message):
                 spoiler.filename = f"SPOILER_{file.filename}"
                 await message.channel.send(f"{message.content}", file=spoiler)
         
-                logRoom = client.get_channel(LOG_ROOM_CHANNEL)
+                logRoom = client.get_channel(config["LOG_ROOM_CHANNEL"])
                 log = await file.to_file()
                 embed = discord.Embed(title = message.content)
                 embed.add_field(name = "送信先", value = f"{message.guild.name} {message.channel.name}")
@@ -77,29 +72,33 @@ async def on_message(message):
                 await logRoom.send(file=log, embed = embed)
             await message.delete()
 
-@commandTree.context_menu(name = "スポイラーにする")
-async def makeitspoiler_app(interaction: discord.Interaction, message: discord.Message):
-    if message.attachments:
-        print("message has attachment")
-        for attachment in message.attachments:
-            file = attachment
-            
-            spoiler = await file.to_file()
-            spoiler.filename = f"SPOILER_{file.filename}"
-            await message.channel.send(f"{message.content}", file=spoiler)
 
-            logRoom = client.get_channel(LOG_ROOM_CHANNEL)
-            log = await file.to_file()
-            embed = discord.Embed(title = message.content)
-            embed.add_field(name = "送信先", value = f"{message.guild.name} {message.channel.name}")
-            embed.add_field(name = "実行者", value = f"{interaction.user.name} {interaction.user.id}")
-            embed.set_author(name = message.author.name,icon_url = message.author.avatar.url)
-            embed.set_footer(text = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S'))
-            await logRoom.send(file=log, embed = embed)
-        # await interaction.response.send_message(ephemeral=True, content="スポイラーにしました")
-        await message.delete()
+@commandTree.command(name="addchannel", description="スポイラーにするチャンネルを追加")
+async def control_command(interaction: discord.Interaction):
+    view = addChannelView()
+    
+    await interaction.response.send_message(view=view, content="チャンネルを選択してください")
+
+class addChannelView(discord.ui.View):
+    @discord.ui.select(cls=discord.ui.ChannelSelect, channel_types=[discord.ChannelType.text], placeholder="チャンネルを選択してください", min_values=1)
+    async def selectMenu(self, interaction: discord.Interaction, select: discord.ui.ChannelSelect):
+        config["CHANNEL"].append(select.values[0].id)
+        save_config(config)
+        await interaction.response.send_message(f"{select.values[0]}を追加しました")
+
+@commandTree.command(name="removechannel", description="スポイラーにするチャンネルを削除")
+async def control_command(interaction: discord.Interaction):
+    view = removeChannelView()
+    
+    await interaction.response.send_message(view=view, content="チャンネルを選択してください")
+    
+class removeChannelView(discord.ui.View):
+    @discord.ui.select(cls=discord.ui.ChannelSelect, channel_types=[discord.ChannelType.text], placeholder="チャンネルを選択してください", min_values=1)
+    async def selectMenu(self, interaction: discord.Interaction, select: discord.ui.ChannelSelect):
+        config["CHANNEL"].remove(select.values[0].id)
+        save_config(config)
+        await interaction.response.send_message(f"{select.values[0]}を削除しました")
 
 
 
-
-client.run(TOKEN)
+client.run(config["DISCORD_BOT_TOKEN"])

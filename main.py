@@ -99,6 +99,14 @@ async def makeitspoiler_app(interaction: discord.Interaction, message: discord.M
         # await interaction.response.send_message(ephemeral=True, content="スポイラーにしました")
         await message.delete()
 
+@commandTree.command(name="addchannel", description="スポイラーにするチャンネルを追加")
+async def control_command(interaction: discord.Interaction):
+    select = discord.ui.ChannelSelect()
+    
+    view = discord.ui.View()
+    view.add_item(select)
+    
+    await interaction.response.send_message(view=view, content="チャンネルを選択してください")
 
 
 

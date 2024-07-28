@@ -101,12 +101,17 @@ async def makeitspoiler_app(interaction: discord.Interaction, message: discord.M
 
 @commandTree.command(name="addchannel", description="スポイラーにするチャンネルを追加")
 async def control_command(interaction: discord.Interaction):
-    select = discord.ui.ChannelSelect()
+    select = discord.ui.ChannelSelect(channel_types=[discord.ChannelType.text], placeholder="チャンネルを選択してください", min_values=1)
     
-    view = discord.ui.View()
-    view.add_item(select)
+    view = addChannelView()
     
     await interaction.response.send_message(view=view, content="チャンネルを選択してください")
+
+class addChannelView(discord.ui.View):
+    @discord.ui.select(cls=discord.ui.ChannelSelect, channel_types=[discord.ChannelType.text], placeholder="チャンネルを選択してください", min_values=1)
+    async def selectMenu(self, interaction: discord.Interaction, select: discord.ui.ChannelSelect):
+        await interaction.response.send_message(f"You selected {select.values}")
+
 
 
 

@@ -2,7 +2,8 @@
 指定されたチャンネルに投稿された画像ファイルにスポイラーをかけるだけのbot
 
 ## 環境
-Python 3.9.8 or higher
+- Python 3.9.8 or higher
+- discord.py 2.3.2 or higher
 
 # 利用方法
 

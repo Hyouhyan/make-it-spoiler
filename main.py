@@ -72,27 +72,6 @@ async def on_message(message):
                 await logRoom.send(file=log, embed = embed)
             await message.delete()
 
-@commandTree.context_menu(name = "スポイラーにする")
-async def makeitspoiler_app(interaction: discord.Interaction, message: discord.Message):
-    if message.attachments:
-        print("message has attachment")
-        for attachment in message.attachments:
-            file = attachment
-            
-            spoiler = await file.to_file()
-            spoiler.filename = f"SPOILER_{file.filename}"
-            await message.channel.send(f"{message.content}", file=spoiler)
-
-            logRoom = client.get_channel(config["LOG_ROOM_CHANNEL"])
-            log = await file.to_file()
-            embed = discord.Embed(title = message.content)
-            embed.add_field(name = "送信先", value = f"{message.guild.name} {message.channel.name}")
-            embed.add_field(name = "実行者", value = f"{interaction.user.name} {interaction.user.id}")
-            embed.set_author(name = message.author.name,icon_url = message.author.avatar.url)
-            embed.set_footer(text = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S'))
-            await logRoom.send(file=log, embed = embed)
-        # await interaction.response.send_message(ephemeral=True, content="スポイラーにしました")
-        await message.delete()
 
 @commandTree.command(name="addchannel", description="スポイラーにするチャンネルを追加")
 async def control_command(interaction: discord.Interaction):

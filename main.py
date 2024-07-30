@@ -71,6 +71,9 @@ async def on_message(message):
                 embed.set_footer(text = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S'))
                 await logRoom.send(file=log, embed = embed)
             await message.delete()
+        else:
+            print("message has no attachment")
+            await message.channel.send(f"{message.content}")
 
 
 @commandTree.command(name="addchannel", description="スポイラーにするチャンネルを追加")

@@ -69,7 +69,11 @@ async def on_message(message):
                 sendLog(message, file)
         else:
             print("message has no attachment")
-            await message.channel.send(f"{message.content}")
+            spomsg = await message.channel.send(f"{message.content}")
+            
+            await spomsg.add_reaction("⬇")
+            await spomsg.add_reaction("⬆")
+            
             sendLog(message)
         await message.delete()
 

@@ -70,10 +70,10 @@ async def on_message(message):
                 embed.set_author(name = message.author.name,icon_url = message.author.avatar.url)
                 embed.set_footer(text = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S'))
                 await logRoom.send(file=log, embed = embed)
-            await message.delete()
         else:
             print("message has no attachment")
             await message.channel.send(f"{message.content}")
+        await message.delete()
 
 
 @commandTree.command(name="addchannel", description="スポイラーにするチャンネルを追加")

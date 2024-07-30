@@ -63,18 +63,22 @@ async def on_message(message):
                 spoiler.filename = f"SPOILER_{file.filename}"
                 await message.channel.send(f"{message.content}", file=spoiler)
         
-                logRoom = client.get_channel(config["LOG_ROOM_CHANNEL"])
                 log = await file.to_file()
-                embed = discord.Embed(title = message.content)
-                embed.add_field(name = "送信先", value = f"{message.guild.name} {message.channel.name}")
-                embed.set_author(name = message.author.name,icon_url = message.author.avatar.url)
-                embed.set_footer(text = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S'))
-                await logRoom.send(file=log, embed = embed)
+                await sendLog(message, log)
         else:
             print("message has no attachment")
             await message.channel.send(f"{message.content}")
+            await sendLog(message, log)
         await message.delete()
 
+def sendLog(message, file):
+    logRoom = client.get_channel(config["LOG_ROOM_CHANNEL"])
+    log = file
+    embed = discord.Embed(title = message.content)
+    embed.add_field(name = "送信先", value = f"{message.guild.name} {message.channel.name}")
+    embed.set_author(name = message.author.name,icon_url = message.author.avatar.url)
+    embed.set_footer(text = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S'))
+    logRoom.send(file=log, embed = embed)
 
 @commandTree.command(name="addchannel", description="スポイラーにするチャンネルを追加")
 async def control_command(interaction: discord.Interaction):

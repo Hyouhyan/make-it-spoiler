@@ -54,6 +54,7 @@ async def on_message(message):
     
     if message.channel.id in config["CHANNEL"]:
         print("it is in channel")
+        logRoom = client.get_channel(config["LOG_ROOM_CHANNEL"])
         if message.attachments:
             print("message has attachment")
             for attachment in message.attachments:
@@ -66,7 +67,10 @@ async def on_message(message):
                 await spomsg.add_reaction("⬇")
                 await spomsg.add_reaction("⬆")
                 
-                sendLog(message, file)
+                file.to_file()
+                log = file
+                
+                await logRoom.send(file=log, embed = sendLog(message))
         else:
             print("message has no attachment")
             spomsg = await message.channel.send(f"{message.content}")
@@ -74,20 +78,15 @@ async def on_message(message):
             await spomsg.add_reaction("⬇")
             await spomsg.add_reaction("⬆")
             
-            sendLog(message)
+            await logRoom.send(embed = sendLog(message))
         await message.delete()
 
-def sendLog(message, file = None):
-    log = None
-    if file is not None:
-        file.to_file()
-        log = file
-    logRoom = client.get_channel(config["LOG_ROOM_CHANNEL"])
+def sendLog(message):
     embed = discord.Embed(title = message.content)
     embed.add_field(name = "送信先", value = f"{message.guild.name} {message.channel.name}")
     embed.set_author(name = message.author.name,icon_url = message.author.avatar.url)
     embed.set_footer(text = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S'))
-    logRoom.send(file=log, embed = embed)
+    return embed
 
 @commandTree.command(name="addchannel", description="スポイラーにするチャンネルを追加")
 async def control_command(interaction: discord.Interaction):

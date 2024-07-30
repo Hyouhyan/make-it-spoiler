@@ -70,10 +70,12 @@ async def on_message(message):
             sendLog(message)
         await message.delete()
 
-def sendLog(message, file):
-    file.to_file()
+def sendLog(message, file = None):
+    log = None
+    if file is not None:
+        file.to_file()
+        log = file
     logRoom = client.get_channel(config["LOG_ROOM_CHANNEL"])
-    log = file
     embed = discord.Embed(title = message.content)
     embed.add_field(name = "送信先", value = f"{message.guild.name} {message.channel.name}")
     embed.set_author(name = message.author.name,icon_url = message.author.avatar.url)

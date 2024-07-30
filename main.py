@@ -63,15 +63,15 @@ async def on_message(message):
                 spoiler.filename = f"SPOILER_{file.filename}"
                 await message.channel.send(f"{message.content}", file=spoiler)
         
-                log = await file.to_file()
-                await sendLog(message, log)
+                sendLog(message, file)
         else:
             print("message has no attachment")
             await message.channel.send(f"{message.content}")
-            await sendLog(message, log)
+            sendLog(message)
         await message.delete()
 
 def sendLog(message, file):
+    file.to_file()
     logRoom = client.get_channel(config["LOG_ROOM_CHANNEL"])
     log = file
     embed = discord.Embed(title = message.content)

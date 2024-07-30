@@ -61,8 +61,11 @@ async def on_message(message):
                 
                 spoiler = await file.to_file()
                 spoiler.filename = f"SPOILER_{file.filename}"
-                await message.channel.send(f"{message.content}", file=spoiler)
-        
+                spomsg = await message.channel.send(f"{message.content}", file=spoiler)
+                
+                await spomsg.add_reaction("⬇")
+                await spomsg.add_reaction("⬆")
+                
                 sendLog(message, file)
         else:
             print("message has no attachment")

@@ -40,5 +40,5 @@ systemdのserviceとして登録したい場合は、以下のgistを参考に�
 ## Dockerfile
 ```
 docker build -t make-it-spoiler .
-docker run -d --name make-it-spoiler make-it-spoiler
+docker run -d --restart always --name make-it-spoiler make-it-spoiler
 ```

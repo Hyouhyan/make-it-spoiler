@@ -35,3 +35,10 @@ python main.py
 
 systemdのserviceとして登録したい場合は、以下のgistを参考にしてください。  
 [pythonプログラムをserviceとして登録する時のテンプレ](https://gist.github.com/hyouhyan/392ec36b5588ca5d8376ff7ab3529085)
+
+
+## Dockerfile
+```
+docker build -t make-it-spoiler .
+docker run -d --name make-it-spoiler make-it-spoiler
+```
